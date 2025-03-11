@@ -1,0 +1,91 @@
+---
+title: "Project Development Log - cryptoR"
+author: "Wenjun Cheng"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Project Development Log
+
+## **Week 1: Initial Research & API Testing** (March 4, 2025)
+
+### **Work Tasks**
+- **Find free APIs** for building a Crypto Screener
+- **Write a proposal**
+- **Test API data retrieval using CoinGecko API**
+
+### **Recent Progress**
+#### *Exploring API Data*
+- Researched the CoinGecko API and identified free endpoints for market analysis.
+- Tested the `/coins/markets` endpoint to extract key information such as **market cap, trading volume, and price**.
+- Parsed JSON data and converted it into a `data.frame` format for further analysis.
+
+### **Issues & Solutions**
+#### *API Access Restrictions*
+**Issue**: Some API endpoints require a premium account for access.  
+**Solution**:
+- Selected publicly available API endpoints such as `/coins/markets` for market data retrieval.
+- Designed a caching strategy to reduce API call frequency and improve efficiency.
+
+#### *Data Format Incompatibility with R*
+**Issue**: API returns nested JSON data, causing errors when converting to `data.frame`.  
+**Solution**:
+- Used `jsonlite::flatten()` to expand nested JSON structures.
+- Applied `dplyr::select()` to retain only essential fields, ensuring consistency in data structure.
+
+### **Testing**
+
+market_data <- get_crypto_market_chart("usd")  
+print(head(market_data))  
+
+## Week 2: Implementing Technical Indicators & Visualization (March 11, 2025)
+
+### Work Tasks
+- Develop functions for market analysis
+- Implement visualization functions for technical indicators
+- Handle missing values in computations
+- Improve error handling and documentation
+- Refactor project into a structured R package
+- Push the project to GitHub
+
+### Recent Progress
+#### Enhancing Market Data Functions
+- Refactored `get_crypto_market_chart()` to include trading volume along with price.
+- Implemented:
+  - `get_exchanges()` for retrieving cryptocurrency exchange data.
+  - `get_top_exchanges()` to analyze exchange trends.
+- Improved API error handling to detect failures and invalid responses.
+
+#### Adding & Refining Technical Indicators
+- Implemented the following functions:
+  - `calculate_ma()`: Moving Average Calculation
+  - `calculate_rsi()`: Relative Strength Index (RSI)
+  - `calculate_bollinger_bands()`: Bollinger Bands
+- All functions now handle missing values and return clean data.
+
+#### Improving Visualization & User Experience
+- Added plot functions:
+  - `plot_market_with_ma()`
+  - `plot_bollinger_bands()`
+- Each function automatically computes missing values before plotting.
+- Filtered out NA values before visualization to prevent warnings.
+
+### Issues & Solutions
+#### Handling NA Values in Indicators
+- **Issue**: Indicators like RSI and Moving Averages return NA for the first *n* days.
+- **Solution**:
+  - Applied `filter(!is.na(...))` before returning results.
+  - Modified plotting functions to compute missing values if needed.
+
+#### Function Name Conflicts in Package Loading
+- **Issue**: Loading the package caused function name conflicts.
+- **Solution**:
+  - Removed previously sourced functions from the global environment.
+  - Ensured that functions are only accessed through `cryptoR::function_name()`.
+
+### Today’s Testing
+
+btc_data <- get_crypto_market_chart("bitcoin", "usd", 100)  
+plot_market_with_ma(btc_data, 50)  
+plot_bollinger_bands(btc_data, 20)  
+
