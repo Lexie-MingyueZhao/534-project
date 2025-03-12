@@ -7,7 +7,7 @@
 plot_capital_flow(data)
 }
 \arguments{
-\item{data}{A dataframe with at least \code{date} and \code{capital_flow} columns.}
+\item{data}{A dataframe with at least \code{date}, \code{price}, and \code{volume} columns.}
 }
 \description{
 Visualize capital flow as a bar chart.

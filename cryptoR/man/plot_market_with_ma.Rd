@@ -4,10 +4,12 @@
 \alias{plot_market_with_ma}
 \title{Plot Market Price with Moving Average}
 \usage{
-plot_market_with_ma(data)
+plot_market_with_ma(data, n = 14)
 }
 \arguments{
-\item{data}{A dataframe with \code{date}, \code{price}, and \code{ma} columns.}
+\item{data}{A dataframe with \code{date} and \code{price} columns.}
+
+\item{n}{Number of days for moving average (default: 14).}
 }
 \description{
 Overlay price and moving average in one chart.

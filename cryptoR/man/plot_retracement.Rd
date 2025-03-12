@@ -7,7 +7,7 @@
 plot_retracement(data)
 }
 \arguments{
-\item{data}{A dataframe with at least \code{date} and \code{retracement_ratio} columns.}
+\item{data}{A dataframe with at least \code{date} and \code{price} columns.}
 }
 \description{
 Visualize retracement ratio over time.

@@ -4,10 +4,12 @@
 \alias{plot_bollinger_bands}
 \title{Plot Bollinger Bands}
 \usage{
-plot_bollinger_bands(data)
+plot_bollinger_bands(data, n = 20)
 }
 \arguments{
-\item{data}{A dataframe with \code{date}, \code{price}, \code{middle_band}, \code{upper_band}, and \code{lower_band} columns.}
+\item{data}{A dataframe with \code{date} and \code{price} columns.}
+
+\item{n}{Number of periods for Bollinger Bands (default: 20).}
 }
 \description{
 Visualize Bollinger Bands for crypto price data.
