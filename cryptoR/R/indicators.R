@@ -5,7 +5,7 @@ library(TTR)
 library(ggplot2)
 
 # ==============================
-# 📌 1️⃣(Moving Average, MA)
+# (Moving Average, MA)
 # ==============================
 #' @title Calculate Moving Average
 #' @description Calculate Moving Average (MA) for crypto price data
@@ -36,7 +36,7 @@ calculate_ma <- function(data, n = 14, plot = TRUE) {
 }
 #btc_ma_100 <- calculate_ma(btc_data, 100)
 # ==============================
-# 📌 2️⃣ (Relative Strength Index, RSI)
+#  (Relative Strength Index, RSI)
 # ==============================
 #' @title Calculate RSI
 #' @description Calculate Relative Strength Index (RSI) for crypto price data
@@ -55,7 +55,7 @@ calculate_rsi <- function(data, n = 14) {
 }
 #btc_rsi <- calculate_rsi(btc_data, 14)
 # ==============================
-# 📌 3️⃣ (Support & Resistance)
+#  (Support & Resistance)
 # ==============================
 #' @title Calculate Support and Resistance Levels
 #' @description Compute rolling min/max to approximate support & resistance levels
@@ -77,7 +77,7 @@ calculate_support_resistance <- function(data, window = 20) {
 }
 #btc_support_resistance <- calculate_support_resistance(btc_data, 20)
 # ==============================
-# 📌 4️⃣  (Bollinger Bands)
+#   (Bollinger Bands)
 # ==============================
 #' @title Calculate Bollinger Bands
 #' @description Compute Bollinger Bands for crypto price data
@@ -102,7 +102,7 @@ calculate_bollinger_bands <- function(data, n = 20) {
 }
 #btc_bbands <- calculate_bollinger_bands(btc_data, 20)
 # ==============================
-# 📌 计算历史波动率 (Historical Volatility)
+#  Calculate Historical Volatility (Historical Volatility)
 # ==============================
 
 #' @title Calculate Historical Volatility
@@ -127,7 +127,7 @@ get_historical_volatility <- function(symbol, days = 30) {
 }
 #eth_volatility <- get_historical_volatility("ethereum", 60)
 # ==============================
-# 📌 计算回撤比率 (Retracement Ratio)
+# Calculate Retracement Ratio (Retracement Ratio)
 # ==============================
 
 #' @title Calculate Retracement Ratio
@@ -145,7 +145,7 @@ calculate_retracement <- function(data) {
 }
 #btc_retrace <- calculate_retracement(btc_data)
 # ==============================
-# 📌 计算资金流向 (Capital Flow)
+# Calculate Capital Flow(Capital Flow)
 # ==============================
 
 #' @title Calculate Capital Flow
