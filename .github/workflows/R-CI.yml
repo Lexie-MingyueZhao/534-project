@@ -24,11 +24,11 @@ jobs:
 
       - name: Install dependencies (manual workaround)
         run: |
-          R -e 'remotes::install_cran(c("testthat", "httr", "dplyr", "TTR", "roxygen2", "pkgload"))'
+          R -e 'remotes::install_cran(c("testthat", "httr",“ggplot2”,"dplyr", "TTR", "roxygen2", "pkgload"))'
 
       - name: Install the package
         run: |
-          R -e 'remotes::install_local("cryptoR", dependencies = TRUE)'
+          R -e 'remotes::install_local("cryptoR", dependencies = TRUE, upgrade = "always")'
 
       - name: Run tests
         run: Rscript -e 'library(testthat); library(cryptoR); testthat::test_dir("cryptoR/tests/testthat")'
