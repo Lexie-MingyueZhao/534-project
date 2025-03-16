@@ -215,4 +215,4 @@ test_that("Moving average function works correctly", {
 - Implement K-line charts, MACD, OBV, and more technical indicators.
 - Provide **smarter market signals** for automated analysis.
 
-🚀 **Stay tuned for more updates!**
+This vignette demonstrated how to install and use cryptoR. For more details, see help(package = "cryptoR").
