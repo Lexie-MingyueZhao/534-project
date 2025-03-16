@@ -142,6 +142,14 @@ Today, I worked on building and integrating a vignette for the `cryptoR` package
 
 ---
 
+## 🚀 3. Next Steps
+- **Improve Formatting**: Enhance the vignette structure for readability.
+- **Add More Examples**: Include additional use cases and detailed explanations.
+- **Generate PDF Output**: Explore exporting the vignette as a standalone PDF.
+- **Ensure CRAN Compatibility**: Make sure the vignette follows CRAN submission guidelines.
+
+---
+
 ## 🎯 4. Conclusion
 Today, I successfully built, tested, and integrated a vignette for the `cryptoR` package. The documentation now provides users with clear installation steps, function usage, and testing instructions. Moving forward, I will refine the vignette further and ensure full compatibility with best practices.
 
