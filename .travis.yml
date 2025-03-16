@@ -12,7 +12,7 @@ r_packages:
 script:
   - R CMD build .  # Build the package
   - R CMD check *tar.gz --as-cran  # Run package checks
-  - Rscript -e 'library(testthat); test_dir("tests/testthat")'
+  - Rscript -e 'library(testthat); testthat::test_dir("cryptoR/tests/testthat")'
 notifications:
   email:
     on_success: change  # Notify only on status change
