@@ -1,0 +1,16 @@
+language: r
+
+r:
+  - release
+
+cache: packages
+before_install:
+  - Rscript -e 'install.packages(c("devtools", "testthat"))'
+
+script:
+  - Rscript -e 'testthat::test_dir("tests/")'
+
+notifications:
+  email:
+    on_success: change  # 仅在构建状态更改时通知
+    on_failure: always  # 失败时总是通知
