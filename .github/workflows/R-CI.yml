@@ -26,9 +26,9 @@ jobs:
         run: |
           R -e 'remotes::install_cran(c("testthat", "httr", "dplyr", "TTR", "roxygen2", "pkgload"))'
 
-      - name: Install the package
+      - name: Install the package (fix missing DESCRIPTION error)
         run: |
-          R -e 'remotes::install_local(".")'
+          R -e 'remotes::install_local("cryptoR")'
 
       - name: Run tests
         run: Rscript -e 'library(testthat); library(cryptoR); testthat::test_dir("cryptoR/tests/testthat")'
