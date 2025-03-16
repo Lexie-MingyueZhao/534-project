@@ -13,17 +13,22 @@ jobs:
       - name: Install R
         uses: r-lib/actions/setup-r@v2
 
-      - name: Install `pak` manually (fix dependency error)
+      - name: Install system dependencies (for R packages)
         run: |
-          R -e 'install.packages("pak", repos="https://cloud.r-project.org")'
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+
+      - name: Install `remotes` (lighter than devtools)
+        run: |
+          R -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
 
       - name: Install dependencies (manual workaround)
         run: |
-          R -e 'install.packages(c("testthat", "devtools", "httr", "dplyr", "TTR"))'
+          R -e 'remotes::install_cran(c("testthat", "httr", "dplyr", "TTR", "roxygen2", "pkgload"))'
 
       - name: Install the package
         run: |
-          R -e 'devtools::install(".")'
+          R -e 'remotes::install_local(".")'
 
       - name: Run tests
         run: Rscript -e 'library(testthat); library(cryptoR); testthat::test_dir("cryptoR/tests/testthat")'
