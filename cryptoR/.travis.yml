@@ -1,17 +1,19 @@
 language: r
 
+cache: packages  # Caches installed R packages to speed up builds
+
 r:
-  - release 
+  - release  # Use the latest stable R version
 
-cache: packages  
-
-before_install:
-  - Rscript -e 'install.packages(c("devtools", "testthat"))' 
+r_packages:
+  - testthat  # Required for running tests
+  - devtools  # Helpful for package development
 
 script:
-  - Rscript -e 'testthat::test_dir("tests/")'  
-
+  - R CMD build .  # Build the package
+  - R CMD check *tar.gz --as-cran  # Run package checks
+  - Rscript -e 'library(testthat); test_dir("tests/testthat")'
 notifications:
   email:
-    on_success: change  
-    on_failure: always  
+    on_success: change  # Notify only on status change
+    on_failure: always  # Always notify on failure
