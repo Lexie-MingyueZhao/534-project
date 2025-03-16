@@ -1,4 +1,0 @@
-language: r
-
-script:
-  - echo "Travis CI is running"
