@@ -20,6 +20,11 @@ jobs:
             devtools
             httr
             dplyr
+            TTR  # 这里加上缺失的 TTR 包
+
+      - name: Install the package
+        run: |
+          R -e 'devtools::install(".")'
 
       - name: Run tests
-        run: Rscript -e 'library(testthat); testthat::test_dir("cryptoR/tests/testthat")'
+        run: Rscript -e 'library(testthat); library(cryptoR); testthat::test_dir("cryptoR/tests/testthat")'
