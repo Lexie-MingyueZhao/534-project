@@ -1,5 +1,5 @@
 # ==============================
-# 📌 1️⃣  Retracement Ratio
+# 1  Retracement Ratio
 # ==============================
 #' @title Plot Retracement Ratio
 #' @description Visualize retracement ratio over time.
@@ -35,7 +35,7 @@ plot_retracement <- function(data) {
 }
 
 # ==============================
-# 📌 2️⃣  Capital Flow
+# 2  Capital Flow
 # ==============================
 #' @title Plot Capital Flow
 #' @description Visualize capital flow as a bar chart.
@@ -64,7 +64,7 @@ plot_capital_flow <- function(data) {
 }
 
 # ==============================
-# 📌 3️⃣  Market Price with Moving Average
+#  3  Market Price with Moving Average
 # ==============================
 #' @title Plot Market Price with Moving Average
 #' @description Overlay price and moving average in one chart.
@@ -89,7 +89,7 @@ plot_market_with_ma <- function(data, n = 14) {
 }
 
 # ==============================
-# 📌 4️⃣  Bollinger Bands
+# 4  Bollinger Bands
 # ==============================
 #' @title Plot Bollinger Bands
 #' @description Visualize Bollinger Bands for crypto price data.
