@@ -4,22 +4,27 @@
 #' @export
 get_exchanges <- function() {
   url <- "https://api.coingecko.com/api/v3/exchanges"
-  response <- httr::GET(url)
 
-  if (status_code(response) != 200) {
-    stop("API request failed!")
+  response <- tryCatch(
+    httr::GET(url),
+    error = function(e) {
+      message("API request failed: ", e$message)
+      return(NULL)
+    }
+  )
+
+  if (is.null(response) || httr::status_code(response) != 200) {
+    warning("API request failed, returning empty data frame")
+    return(data.frame(id = character(), name = character(), country = character(), trade_volume_24h_btc = numeric()))
   }
 
-  data <- fromJSON(content(response, "text", encoding = "UTF-8"))
+  data <- jsonlite::fromJSON(httr::content(response, "text", encoding = "UTF-8"))
 
   df <- data.frame(
     id = data$id,
     name = data$name,
-    year_established = data$year_established,
     country = data$country,
-    trade_volume_24h_btc = data$trade_volume_24h_btc,
-    trust_score = data$trust_score,
-    url = data$url
+    trade_volume_24h_btc = data$trade_volume_24h_btc
   )
 
   return(df)
@@ -74,16 +79,15 @@ get_exchange_pairs <- function(exchange_id) {
   data <- fromJSON(content(response, "text", encoding = "UTF-8"))
 
   if (!"tickers" %in% names(data) || is.null(data$tickers) || length(data$tickers) == 0) {
-    stop("No tickers found for this exchange.")
+    message("No tickers found for this exchange. Returning empty dataframe.")
+    return(data.frame(pair = character(), base_currency = character(), quote_currency = character(), volume = numeric()))
   }
-  tickers <- data$tickers
-
 
   df <- data.frame(
-    pair = data$tickers$market$identifier,
-    base_currency = data$tickers$base,
-    quote_currency = data$tickers$target,
-    volume = data$tickers$volume
+    pair = sapply(data$tickers, function(x) if (!is.null(x$market$identifier)) x$market$identifier else NA),
+    base_currency = sapply(data$tickers, function(x) if (!is.null(x$base)) x$base else NA),
+    quote_currency = sapply(data$tickers, function(x) if (!is.null(x$target)) x$target else NA),
+    volume = sapply(data$tickers, function(x) if (!is.null(x$volume)) x$volume else 0)
   )
 
   return(df)
@@ -104,25 +108,15 @@ get_exchange_volume_history <- function(exchange_id) {
 
   data <- fromJSON(content(response, "text", encoding = "UTF-8"))
 
-  if (!"tickers" %in% names(data) || length(data$tickers) == 0) {
-    return(data.frame(pair = character(), base_currency = character(), quote_currency = character(), volume = numeric()))
+  # 如果 API 返回空数据，返回空 DataFrame
+  if (length(data) == 0) {
+    return(data.frame(date = as.Date(character()), volume_btc = numeric()))
   }
 
-  trade_volume_24h_btc <- data$trade_volume_24h_btc
-  # extract data safely
   df <- data.frame(
-    pair = sapply(data$tickers, function(x) {
-      if ("market" %in% names(x) && "identifier" %in% names(x$market)) {
-        return(x$market$identifier)
-      } else {
-        return(exchange_id)
-      }
-    }),
-    base_currency = sapply(data$tickers, function(x) ifelse(!is.null(x$base), x$base, NA)),
-    quote_currency = sapply(data$tickers, function(x) ifelse(!is.null(x$target), x$target, NA)),
-    volume = sapply(data$tickers, function(x) ifelse(!is.null(x$volume), x$volume, 0))
+    date = as.POSIXct(sapply(data, function(x) x[[1]] / 1000), origin = "1970-01-01"),
+    volume_btc = sapply(data, function(x) x[[2]])
   )
 
   return(df)
 }
-
