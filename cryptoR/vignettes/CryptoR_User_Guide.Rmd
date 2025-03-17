@@ -1,0 +1,218 @@
+---
+title: "CryptoR User Guide"
+author: "Jieyi Yao, Mingyue Zhao, Wenjun Cheng"
+date: "2025-03-15"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CryptoR User Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# 📌 CryptoR User Guide
+
+## 📖 1. Introduction
+
+`cryptoR` is an R package designed for retrieving and analyzing cryptocurrency market data, exchange information, and various technical and market indicators. It leverages the CoinGecko API to fetch data and provides analytical and visualization functionalities to help users analyze the cryptocurrency market.
+
+------------------------------------------------------------------------
+
+## 📦 2. Installing CryptoR
+
+Currently, `cryptoR` is not available on CRAN, so you need to install it manually:
+
+``` r
+# Install devtools (if not already installed)
+install.packages("devtools")
+
+# Install CryptoR from GitHub
+devtools::install_github("Lexie-MingyueZhao/534-project/cryptoR")
+
+# Load the CryptoR package
+library(cryptoR)
+```
+
+### **Required Dependencies**
+
+Before using `cryptoR`, install and load the necessary dependencies:
+
+``` r
+# Install required packages
+install.packages(c("testthat", "httr", "ggplot2", "dplyr", "TTR", "roxygen2", "pkgload","jsonlite"))
+
+# Load libraries
+library(jsonlite)
+library(testthat)
+library(httr)
+library(ggplot2)
+library(dplyr)
+library(TTR)
+library(roxygen2)
+library(pkgload)
+```
+
+These libraries are needed for:
+
+-   `jsonlite`: Parsing and generating JSON data, commonly used for handling API responses.
+-   `testthat`: Unit testing.
+-   `httr`: API requests.
+-   `ggplot2`: Visualization.
+-   `dplyr`: Data manipulation.
+-   `TTR`: Technical trading indicators.
+-   `roxygen2`: Generating documentation.
+-   `pkgload`: Managing package development.
+
+------------------------------------------------------------------------
+
+## 📌 3. Available Functions
+
+`cryptoR` provides **market data queries, exchange data queries, technical indicators, and visualization analysis**. Below are the key function categories:
+
+### 🏦 **Exchange API**
+
+| Function | Description |
+|---------------------------------|---------------------------------------|
+| `get_exchanges()` | Retrieves basic information of all exchanges |
+| `get_exchange_pairs(exchange_id)` | Retrieves trading pairs for a specific exchange |
+| `get_exchange_volume_history(exchange_id)` | Retrieves historical trading volume of an exchange |
+| `get_exchange_details(exchange_id)` | Retrieves detailed information about an exchange |
+| `get_top_exchanges(n = 10)` | Retrieves the top `n` exchanges by trading volume |
+
+#### **Example:**
+
+``` r
+exchanges <- get_exchanges()
+head(exchanges)
+```
+
+------------------------------------------------------------------------
+
+### 📊 **Market Data API**
+
+| Function | Description |
+|---------------------------------|---------------------------------------|
+| `get_crypto_market_chart(symbol, currency = "usd", days = 30)` | Retrieves historical market data (price + volume) |
+| `get_historical_volatility(symbol, days = 30)` | Computes historical volatility of a cryptocurrency |
+| `calculate_retracement(data)` | Calculates retracement ratio |
+| `calculate_capital_flow(data)` | Computes capital flow |
+
+#### **Example:**
+
+``` r
+btc_data <- get_crypto_market_chart("bitcoin", "usd", 100)
+head(btc_data)
+```
+
+------------------------------------------------------------------------
+
+### 📉 **Technical Indicators**
+
+| Function | Description |
+|---------------------------------|---------------------------------------|
+| `calculate_ma(data, n = 14)` | Computes moving average |
+| `calculate_rsi(data, n = 14)` | Computes the RSI indicator |
+| `calculate_support_resistance(data, window = 20)` | Computes support & resistance levels |
+| `calculate_bollinger_bands(data, n = 20)` | Computes Bollinger Bands |
+
+#### **Example:**
+
+``` r
+btc_ma <- calculate_ma(btc_data, 50)
+btc_rsi <- calculate_rsi(btc_data, 14)
+btc_support <- calculate_support_resistance(btc_data, 20)
+btc_bbands <- calculate_bollinger_bands(btc_data, 20)
+```
+
+------------------------------------------------------------------------
+
+### 📊 **Visualization**
+
+| Function | Description |
+|---------------------------------|---------------------------------------|
+| `plot_retracement(data)` | Plots retracement ratio line chart |
+| `plot_capital_flow(data)` | Plots capital flow graph |
+| `plot_market_with_ma(data, n = 14)` | Plots market price with moving average |
+| `plot_bollinger_bands(data, n = 20)` | Plots Bollinger Bands |
+
+#### **Example:**
+
+``` r
+plot_retracement(btc_data)
+plot_capital_flow(btc_data)
+plot_market_with_ma(btc_data, 50)
+plot_bollinger_bands(btc_data, 20)
+```
+
+------------------------------------------------------------------------
+
+## 🔍 4. Example: Complete Analysis Workflow
+
+Suppose we want to analyze **Bitcoin (BTC)**, we can follow these steps:
+
+### 📥 Retrieve Market Data
+
+``` r
+btc_data <- get_crypto_market_chart("bitcoin", "usd", 100)
+```
+
+### 📊 Compute Technical Indicators
+
+``` r
+btc_ma <- calculate_ma(btc_data, 50)  # 50-day moving average
+btc_rsi <- calculate_rsi(btc_data, 14)  # 14-day RSI
+btc_retrace <- calculate_retracement(btc_data)  # Retracement ratio
+btc_capital_flow <- calculate_capital_flow(btc_data)  # Capital flow
+btc_bbands <- calculate_bollinger_bands(btc_data, 20)  # Bollinger Bands
+```
+
+### 📈 Visualization Analysis
+
+``` r
+plot_market_with_ma(btc_data, 50)  # Price + Moving Average
+plot_bollinger_bands(btc_data, 20)  # Bollinger Bands
+plot_retracement(btc_data)  # Retracement Ratio
+plot_capital_flow(btc_data)  # Capital Flow
+```
+
+------------------------------------------------------------------------
+
+## 🧪 5. Testing CryptoR
+
+To ensure that all functions work correctly, `cryptoR` includes unit tests using the `testthat` package. The tests can be run as follows:
+
+``` r
+library(testthat)
+test_dir("tests/testthat")
+```
+
+### **Example Tests**
+
+``` r
+test_that("Market data API returns data frame", {
+  data <- get_crypto_market_chart("bitcoin", "usd", 10)
+  expect_s3_class(data, "data.frame")
+})
+
+test_that("Moving average function works correctly", {
+  data <- data.frame(price = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+  ma <- calculate_ma(data, n = 5)
+  expect_true(length(ma) == 10)
+})
+```
+
+------------------------------------------------------------------------
+
+## 🎯 6. Conclusion
+- `cryptoR` provides a **complete set of tools** for **data retrieval, indicator calculation, and visualization**, allowing users to quickly analyze the cryptocurrency market.
+- Users can **freely combine functions** to meet different investment needs.
+- The package supports **multiple cryptocurrencies**, just change the `symbol` parameter (e.g., `ethereum`, `dogecoin`).
+
+------------------------------------------------------------------------
+
+## 📌 7. Future Improvements
+
+- Add more exchange data analysis.
+- Implement K-line charts, MACD, OBV, and more technical indicators.
+- Provide **smarter market signals** for automated analysis.
+
+This vignette demonstrated how to install and use cryptoR. For more details, see help(package = "cryptoR").
